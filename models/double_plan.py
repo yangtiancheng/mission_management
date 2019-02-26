@@ -39,6 +39,10 @@ class DoublePlans(models.Model):
                             string='周次', help='周次', track_visibility='onchange')
     # 员工
     employee_id = fields.Many2one(comodel_name='hr.employee', string='技术顾问', readonly=True, track_visibility='onchange')
+    # 登录者是当前单据员工的直系经理
+    is_manager = fields.Boolean(compute='_judge_is_manager')
+    # 登录者是当前单据员工
+    is_self = fields.Boolean(compute='_judge_is_manager')
     # 状态
     state = fields.Selection([('created', '维护中'),
                               ('confirm', '已确认'),
@@ -67,12 +71,13 @@ class DoublePlans(models.Model):
 
     @api.multi
     def unlink(self):
-        if self.env.user.id == self.create_uid.id:
-            pass
-        else:
-            raise ValidationError(_('您仅可以删除自己创建的单据!'))
-        if self.state == 'confirm' or self.state == 'done':
-            raise ValidationError(_('您仅可以删除维护中的单据!'))
+        for rec in self:
+            if rec.env.user.id == rec.create_uid.id:
+                pass
+            else:
+                raise ValidationError(_('您仅可以删除自己创建的单据!'))
+            if rec.state == 'confirm' or rec.state == 'done':
+                raise ValidationError(_('您仅可以删除维护中的单据!'))
         return super(DoublePlans, self).unlink()
 
     @api.model
@@ -82,6 +87,19 @@ class DoublePlans(models.Model):
         result['month'] = str(datetime.datetime.today())[5:7]
         result['employee_id'] = self.env.user.employee_ids[0].id
         return result
+
+    @api.one
+    @api.depends('employee_id')
+    def _judge_is_manager(self):
+        if self.employee_id:
+            if self.employee_id.parent_id and self.employee_id.parent_id.id == self.env.user.employee_ids[0].id:
+                self.is_manager = True
+            else:
+                self.is_manager = False
+            if self.employee_id.id == self.env.user.employee_ids[0].id:
+                self.is_self = True
+            else:
+                self.is_self = False
 
     @api.multi
     def button_confirm(self):
@@ -93,7 +111,18 @@ class DoublePlans(models.Model):
     @api.multi
     def button_done(self):
         for res in self:
-            res.state = 'done'
+            if self.env.user.employee_ids[0].id == res.employee_id.parent_id.id:
+                res.state = 'done'
+            else:
+                pass
+
+    @api.multi
+    def button_restart(self):
+        for res in self:
+            if self.env.user.employee_ids[0].id == res.employee_id.parent_id.id:
+                res.state = 'created'
+            else:
+                pass
 
 
 class DoublePlansLine(models.Model):

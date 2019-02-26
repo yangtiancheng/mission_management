@@ -24,12 +24,14 @@
                 <form>
                     <header>
                         <button name="button_confirm" type="object" string="确认"
-                                attrs="{'invisible': [('state', '!=', 'created')]}" class="btn-info"/>
+                                attrs="{'invisible': ['|',('state', '!=', 'created'),('is_self','!=',True)]}" class="btn-info"/>
                         <button name="button_done" type="object" string="关闭"
-                                attrs="{'invisible': [('state', '!=', 'confirm')]}" class="btn-info"/>
+                                attrs="{'invisible': ['|',('state', '!=', 'confirm'),('is_manager','!=',True)]}" class="btn-info"/>
                         <field name="state" widget="statusbar" statusbar_visible="created,confirm,done"/>
                     </header>
                     <sheet>
+                        <field name="is_manager" attrs="{'invisible':True}"/>
+                        <field name="is_self" attrs="{'invisible':True}"/>
                         <h1>
                             <field name="name"/>
                         </h1>
@@ -41,7 +43,7 @@
                             <group>
                                 <field name="employee_id" attrs="{'required':True}"
                                        options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"/>
-                                <field name="week" attrs="{'required':True,'readonly':[('state','!=','created')]}"/>
+                                <field name="week" attrs="{'required':True,'readonly':['|',('state','!=','created'),('is_self','!=',True)]}"/>
                             </group>
                         </group>
                         <label for=""/>
@@ -52,7 +54,7 @@
                             <page string="本周日常">
                                 <field name="double_plan_ids"
                                        options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"
-                                       attrs="{'readonly':[('state','!=','created')]}">
+                                       attrs="{'readonly':['|',('state','!=','created'),('is_self','!=',True)]}">
                                     <tree editable="bottom">
                                         <field name="name" attrs="{'required':True}"/>
                                         <field name="date" attrs="{'required':True}"/>
@@ -70,7 +72,7 @@
                             <page string="下周计划">
                                 <field name="double_next_plan_ids"
                                        options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"
-                                       attrs="{'readonly':[('state','!=','created')]}">
+                                       attrs="{'readonly':['|',('state','!=','created'),('is_self','!=',True)]}">
                                     <tree editable="bottom">
                                         <field name="name" attrs="{'required':True}"/>
                                         <field name="date" attrs="{'required':True}"/>
@@ -81,9 +83,11 @@
                         </notebook>
                         <notebook>
                             <page string="上级评价">
-                                <field name="star_rating" attrs="{'readonly':[('state','!=','confirm')]}"/>
-                                <field name="leader_comment" string="评价内容" placeholder="请上级书写意见..."
-                                       attrs="{'readonly':[('state','!=','confirm')]}"/>
+                                <group>
+                                    <field name="star_rating" attrs="{'readonly':['|',('state','!=','confirm'),('is_manager','!=',True)]}"/>
+                                    <field name="leader_comment" string="评价内容" placeholder="请上级书写意见..."
+                                           attrs="{'readonly':['|',('state','!=','confirm'),('is_manager','!=',True)]}"/>
+                                </group>
                             </page>
                         </notebook>
 

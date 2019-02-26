@@ -116,6 +116,14 @@ class DoublePlans(models.Model):
             else:
                 pass
 
+    @api.multi
+    def button_restart(self):
+        for res in self:
+            if self.env.user.employee_ids[0].id == res.employee_id.parent_id.id:
+                res.state = 'created'
+            else:
+                pass
+
 
 class DoublePlansLine(models.Model):
     _name = 'double.plan.line'

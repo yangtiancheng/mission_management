@@ -27,6 +27,8 @@
                                 attrs="{'invisible': ['|',('state', '!=', 'created'),('is_self','!=',True)]}" class="btn-info"/>
                         <button name="button_done" type="object" string="关闭"
                                 attrs="{'invisible': ['|',('state', '!=', 'confirm'),('is_manager','!=',True)]}" class="btn-info"/>
+                        <button name="button_restart" type="object" string="重置"
+                                attrs="{'invisible': ['|',('state', '!=', 'done'),('is_manager','!=',True)]}" class="btn-info"/>
                         <field name="state" widget="statusbar" statusbar_visible="created,confirm,done"/>
                     </header>
                     <sheet>

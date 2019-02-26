@@ -50,7 +50,8 @@
                         </group>
                         <label for=""/>
                         <div style="color:red;font-size: 10px;">
-                            <p>注:使用流程请下滑参考说明.</p><br/>
+                            <p>注:使用流程请下滑参考说明.</p>
+                            <br/>
                         </div>
                         <notebook>
                             <page string="本周日常">
@@ -66,6 +67,8 @@
                                         <field name="note" placeholder=""/>
                                         <field name="per_work_content" placeholder="预计次日工作内容."/>
                                         <field name="has_rdc_mission"/>
+                                        <field name="write_uid"
+                                               options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"/>
                                     </tree>
                                 </field>
                             </page>
@@ -79,6 +82,8 @@
                                         <field name="name" attrs="{'required':True}"/>
                                         <field name="date" attrs="{'required':True}"/>
                                         <field name="work_content" placeholder="" attrs="{'required':True}"/>
+                                        <field name="write_uid"
+                                               options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"/>
                                     </tree>
                                 </field>
                             </page>
@@ -95,10 +100,14 @@
 
                         <label for=""/>
                         <div style="color:gray;font-size: 10px;">
-                            <h1>使用流程：</h1><br/>
-                            <p>1. 员工每日需在21:00前维护当日工作内容和次日安排计划。</p><br/>
-                            <p>2. 员工每周五需在19:00前将所有本周工作内容维护完成，下周预计内容维护完成，确认无误后点击"确认"按钮。</p><br/>
-                            <p>3. 上级主管需在周日18:00前，对员工上周情况做综合评定，评定完成后点击"关闭"按钮,完成整个流程。</p><br/>
+                            <h1>使用流程：</h1>
+                            <br/>
+                            <p>1. 员工每日需在21:00前维护当日工作内容和次日安排计划。</p>
+                            <br/>
+                            <p>2. 员工每周五需在19:00前将所有本周工作内容维护完成，下周预计内容维护完成，确认无误后点击"确认"按钮。</p>
+                            <br/>
+                            <p>3. 上级主管需在周日18:00前，对员工上周情况做综合评定，评定完成后点击"关闭"按钮,完成整个流程。</p>
+                            <br/>
                         </div>
                         <div class="oe_chatter">
                             <field name="message_follower_ids" widget="mail_followers"/>

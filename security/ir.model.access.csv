@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_double_plan,double_plan,model_double_plan,,1,1,1,1
+access_double_plan_line,double_plan_line,model_double_plan_line,,1,1,1,1
+access_double_next_plan_line,double_next_plan_line,model_double_next_plan_line,,1,1,1,1

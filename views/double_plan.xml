@@ -62,6 +62,7 @@
                                         <field name="note" placeholder=""/>
                                         <field name="per_work_content" placeholder="预计次日工作内容."/>
                                         <field name="has_rdc_mission"/>
+                                        <field name="write_uid" options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"/>
                                     </tree>
                                 </field>
                             </page>
@@ -75,6 +76,7 @@
                                         <field name="name" attrs="{'required':True}"/>
                                         <field name="date" attrs="{'required':True}"/>
                                         <field name="work_content" placeholder="" attrs="{'required':True}"/>
+                                        <field name="write_uid" options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"/>
                                     </tree>
                                 </field>
                             </page>

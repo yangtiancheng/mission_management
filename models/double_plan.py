@@ -85,18 +85,19 @@ class DoublePlans(models.Model):
         result = super(DoublePlans, self).default_get(fields)
         result['year'] = str(datetime.datetime.today())[:4]
         result['month'] = str(datetime.datetime.today())[5:7]
-        result['employee_id'] = self.env.user.employee_ids[0].id
+        result['employee_id'] = self.env.user.employee_ids and self.env.user.employee_ids[0].id or False
         return result
 
     @api.one
     @api.depends('employee_id')
     def _judge_is_manager(self):
         if self.employee_id:
-            if self.employee_id.parent_id and self.employee_id.parent_id.id == self.env.user.employee_ids[0].id:
+            if self.employee_id.parent_id and self.env.user.employee_ids and self.employee_id.parent_id.id == self.env.user.employee_ids[0].id:
                 self.is_manager = True
             else:
                 self.is_manager = False
-            if self.employee_id.id == self.env.user.employee_ids[0].id:
+
+            if self.env.user.employee_ids and self.employee_id.id == self.env.user.employee_ids[0].id:
                 self.is_self = True
             else:
                 self.is_self = False
@@ -111,7 +112,7 @@ class DoublePlans(models.Model):
     @api.multi
     def button_done(self):
         for res in self:
-            if self.env.user.employee_ids[0].id == res.employee_id.parent_id.id:
+            if self.env.user.employee_ids and self.env.user.employee_ids[0].id == res.employee_id.parent_id.id:
                 res.state = 'done'
             else:
                 pass
@@ -119,7 +120,7 @@ class DoublePlans(models.Model):
     @api.multi
     def button_restart(self):
         for res in self:
-            if self.env.user.employee_ids[0].id == res.employee_id.parent_id.id:
+            if self.env.user.employee_ids and self.env.user.employee_ids[0].id == res.employee_id.parent_id.id:
                 res.state = 'created'
             else:
                 pass

@@ -1,0 +1,120 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="double_plan_tree">
+            <field name="name">Double Plan Tree</field>
+            <field name="model">double.plan</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="year"/>
+                    <field name="month"/>
+                    <field name="week"/>
+                    <field name="employee_id"/>
+                    <field name="state"/>
+                    <field name="write_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="double_plan_form">
+            <field name="name">Double Plan From</field>
+            <field name="model">double.plan</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="button_confirm" type="object" string="确认"
+                                attrs="{'invisible': [('state', '!=', 'created')]}" class="btn-info"/>
+                        <button name="button_done" type="object" string="关闭"
+                                attrs="{'invisible': [('state', '!=', 'confirm')]}" class="btn-info"/>
+                        <field name="state" widget="statusbar" statusbar_visible="created,confirm,done"/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="year" attrs="{'required':True}"/>
+                                <field name="month" attrs="{'required':True}"/>
+                            </group>
+                            <group>
+                                <field name="employee_id" attrs="{'required':True}"
+                                       options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"/>
+                                <field name="week" attrs="{'required':True,'readonly':[('state','!=','created')]}"/>
+                            </group>
+                        </group>
+                        <label for=""/>
+                        <div style="color:red;font-size: 10px;">
+                            <p>注:使用流程请下滑参考说明.</p><br/>
+                        </div>
+                        <notebook>
+                            <page string="本周日常">
+                                <field name="double_plan_ids"
+                                       options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"
+                                       attrs="{'readonly':[('state','!=','created')]}">
+                                    <tree editable="bottom">
+                                        <field name="name" attrs="{'required':True}"/>
+                                        <field name="date" attrs="{'required':True}"/>
+                                        <field name="work_time" attrs="{'required':True}"/>
+                                        <field name="work_time_sum"/>
+                                        <field name="work_content" placeholder="" attrs="{'required':True}"/>
+                                        <field name="note" placeholder=""/>
+                                        <field name="per_work_content" placeholder="预计次日工作内容."/>
+                                        <field name="has_rdc_mission"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <notebook>
+                            <page string="下周计划">
+                                <field name="double_next_plan_ids"
+                                       options="{'no_create_edit':'1','no_create':'1','no_open':'1'}"
+                                       attrs="{'readonly':[('state','!=','created')]}">
+                                    <tree editable="bottom">
+                                        <field name="name" attrs="{'required':True}"/>
+                                        <field name="date" attrs="{'required':True}"/>
+                                        <field name="work_content" placeholder="" attrs="{'required':True}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <notebook>
+                            <page string="上级评价">
+                                <field name="star_rating" attrs="{'readonly':[('state','!=','confirm')]}"/>
+                                <field name="leader_comment" string="评价内容" placeholder="请上级书写意见..."
+                                       attrs="{'readonly':[('state','!=','confirm')]}"/>
+                            </page>
+                        </notebook>
+
+                        <label for=""/>
+                        <div style="color:gray;font-size: 10px;">
+                            <h1>使用流程：</h1><br/>
+                            <p>1. 员工每日需在21:00前维护当日工作内容和次日安排计划。</p><br/>
+                            <p>2. 员工每周五需在19:00前将所有本周工作内容维护完成，下周预计内容维护完成，确认无误后点击"确认"按钮。</p><br/>
+                            <p>3. 上级主管需在周日18:00前，对员工上周情况做综合评定，评定完成后点击"关闭"按钮,完成整个流程。</p><br/>
+                        </div>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="double_plan_action">
+            <field name="name">Double Plan Action</field>
+            <field name="res_model">double.plan</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Top menu item -->
+        <menuitem name="工作管理" id="mission_management_top"/>
+        <menuitem name="日报管理" id="double_plan_menu" parent="mission_management_top"
+                  action="double_plan_action"/>
+
+    </data>
+</odoo>

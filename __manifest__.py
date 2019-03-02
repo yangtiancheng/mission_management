@@ -10,7 +10,7 @@
 
     'author': "TC",
     'website': "http://www.hand-china.com",
-    'sequence': 1,
+    'sequence': 20,
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
@@ -29,7 +29,7 @@
     'demo': [
     ],
     'installable': True,
-    'application': True,
+    'application': False,
     'auto_install': False,
 }
 # -*- coding: utf-8 -*-

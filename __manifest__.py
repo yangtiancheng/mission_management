@@ -18,7 +18,7 @@
     'version': '1.0.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','mail'],
+    'depends': ['my_base','hr','mail'],
 
     # always loaded
     'data': [

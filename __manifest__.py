@@ -8,14 +8,14 @@
         人员工作情况管理，明确自身任务，方便leader预览，及时调整工作，合理分配资源.
     """,
 
-    'author': "TC",
-    'website': "http://www.hand-china.com",
-    'sequence': 20,
+    'author': "Thompson",
+    'website': "https://yangtiancheng.github.io/bbs.github.io/",
+    'sequence': 1,
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
+    'category': 'Management',
+    'version': '1.0.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base','hr','mail'],
@@ -29,7 +29,7 @@
     'demo': [
     ],
     'installable': True,
-    'application': False,
+    'application': True,
     'auto_install': False,
 }
 # -*- coding: utf-8 -*-
